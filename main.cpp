@@ -54,7 +54,7 @@ int main(int argc, const char **argv)
     bool spawnCherry = true;
     Mat resizedCherry_img;
     Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
-    
+
     //  resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
 
     scale = 1; // usar 1, 2, 4.
@@ -70,8 +70,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    //if (!capture.open("video.mp4"))
+    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    if (!capture.open("video.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
