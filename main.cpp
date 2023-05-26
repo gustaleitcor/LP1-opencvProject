@@ -46,7 +46,7 @@ int main(int argc, const char **argv)
 
     // Cherry variables
     Cherry cherry;
-    bool spawn = true;
+    bool spawnCherry = true;
     Mat resizedCherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
     Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
     resize(cherry_img, resizedCherry_img, Size(50, 50), INTER_LINEAR);
@@ -120,10 +120,11 @@ int main(int argc, const char **argv)
                           color, 3);
             }
 
-            if (spawn)
+            // Verifica se é para realeatorizar a posição da Cherry
+            if (spawnCherry)
             {
                 cherry.getNewPos(frame.cols, frame.rows);
-                spawn = false;
+                spawnCherry = false;
             }
 
             // Desenha a cherry
