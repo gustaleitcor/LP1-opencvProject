@@ -24,7 +24,7 @@ int main(int argc, const char **argv)
     double scale;
     vector<Rect> faces;
     Scalar color = Scalar(255, 0, 0);
-    Mat resizedImg = cv::imread("src/imgs/pacman.png", IMREAD_UNCHANGED);
+    Mat pacman_resizedImg = cv::imread("src/imgs/pacman.png", IMREAD_UNCHANGED);
     // FPS variaveis
     double fps = 0;
     double startTime = cv::getTickCount();
@@ -85,24 +85,21 @@ int main(int argc, const char **argv)
                     }
                 }
 
+                // calcula o movimento do jogador
                 modulo = player.pos.dist(r.width, r.height);
                 posUnit.setCoordenadas((r.x - player.pos.x) / modulo, (r.y - player.pos.y) / modulo, 0);
                 player.vel.setCoordenadas(posUnit.x * 10, posUnit.y * 10, 0);
-
                 player.atualizar();
 
-                resize(pacman_img, resizedImg, Size(r.width, r.height), INTER_LINEAR);
+                resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
 
                 rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
                           Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
                           color, 3);
             }
-            else
-            {
-            }
 
             // Desenha o Player
-            drawTransparency(frame, resizedImg, player.pos.x, player.pos.y);
+            drawTransparency(frame, pacman_resizedImg, player.pos.x, player.pos.y);
             // Atualiza o fps
             attFPS(fps, frameCount, startTime);
             // Desenha o fps no frame
