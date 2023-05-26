@@ -69,10 +69,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-
     if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
     // if (!capture.open("video.mp4"))
->>>>>>> 005ec593dcb7175aa70ec24d0fbecaa283584ec2
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -135,16 +133,14 @@ int main(int argc, const char **argv)
                 cherry.getNewPos(frame.cols, frame.rows);
                 spawnCherry = false;
             }
-            
-            // Resize dos fantamas
-            resize(fanta1, fanta1_resized, Size(frame.cols/8, frame.rows/8), INTER_LINEAR);
-            resize(fanta2, fanta2_resized, Size(frame.cols/8, frame.rows/8), INTER_LINEAR);
 
-<<<<<<< HEAD
-=======
+            // Resize dos fantamas
+            resize(fanta1, fanta1_resized, Size(frame.cols / 8, frame.rows / 8), INTER_LINEAR);
+            resize(fanta2, fanta2_resized, Size(frame.cols / 8, frame.rows / 8), INTER_LINEAR);
+
             // Desenha a cherry
             drawTransparency(frame, resizedCherry_img, cherry.pos.x, cherry.pos.y);
->>>>>>> 005ec593dcb7175aa70ec24d0fbecaa283584ec2
+
             // Desenha o Player
             drawTransparency(frame, pacman_resizedImg, player.pos.x, player.pos.y);
 
@@ -155,20 +151,16 @@ int main(int argc, const char **argv)
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
             // Desenha os fantasmas
-            drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y);
+            drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y); // bugado
             drawTransparency(frame, fanta2_resized, fantasmas[1].pos.x, fantasmas[1].pos.y);
 
             // Desenha o frame na tela
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
-<<<<<<< HEAD
-            if (c == 27 || c == 'q' || c == 'Q') break;
 
-=======
             if (c == 27 || c == 'q' || c == 'Q')
                 break;
->>>>>>> 005ec593dcb7175aa70ec24d0fbecaa283584ec2
         }
     }
 
