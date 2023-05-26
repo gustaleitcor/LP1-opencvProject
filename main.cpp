@@ -157,6 +157,8 @@ int main(int argc, const char **argv)
             // Desenha o fps no frame
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
+            putText(frame, "Placar: ", Point(frame.cols/2 - 200, 52), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
+
             // Desenha os fantasmas
             drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y);
             drawTransparency(frame, fanta2_resized, fantasmas[1].pos.x, fantasmas[1].pos.y);
