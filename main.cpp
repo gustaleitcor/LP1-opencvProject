@@ -26,10 +26,12 @@ int main(int argc, const char **argv)
     vector<Rect> faces;
     Scalar color = Scalar(255, 0, 0);
     Mat pacman_resizedImg = cv::imread("src/sprites/pacman.png", IMREAD_UNCHANGED);
+
     // FPS variaveis
     double fps = 0;
     double startTime = cv::getTickCount();
     int frameCount = 0;
+
     // Player variaveis
     Player player(0, 0, 1);
     double norma;
@@ -37,6 +39,7 @@ int main(int argc, const char **argv)
     int faceWidth, faceHeight;
     double pacmanScale = 1;
     Mat pacman_img = cv::imread("src/sprites/pacman.png", IMREAD_UNCHANGED);
+    
     // Fantasmas variaveis
     vector<Fantasma> fanstasmas;
 
@@ -53,8 +56,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    // if(!capture.open(0))
+    //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    if(!capture.open("video.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -118,8 +121,9 @@ int main(int argc, const char **argv)
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
-            if (c == 27 || c == 'q' || c == 'Q')
-                break;
+            if (c == 27 || c == 'q' || c == 'Q') break;
+
+            
         }
     }
 
