@@ -50,12 +50,14 @@ int main(int argc, const char **argv)
         return -1;
     }
 
+    // YEGO
+
     if (!capture.open(0)) // para testar com um video
-    if(!capture.open(0))
-    {
-        cout << "Capture from camera #0 didn't work" << endl;
-        return 1;
-    }
+        if (!capture.open(0))
+        {
+            cout << "Capture from camera #0 didn't work" << endl;
+            return 1;
+        }
 
     if (capture.isOpened())
     {
