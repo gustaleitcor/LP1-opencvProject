@@ -47,7 +47,7 @@ int main(int argc, const char **argv)
     Mat fanta1_resized;
     Mat fanta2 = cv::imread("src/sprites/fanta2.png", IMREAD_UNCHANGED);
     Mat fanta2_resized;
-
+    double size_x, size_y;
     // Cherry variables
     Cherry cherry;
     bool spawnCherry = true;
@@ -83,8 +83,13 @@ int main(int argc, const char **argv)
         cout << "Video capturing has been started ..." << endl;
 
         player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
-        fantasmas.push_back(Fantasma(0, 0, 0));
-        fantasmas.push_back(Fantasma(frame.cols, frame.rows, 0));
+
+        //Definicacao do tamanho e posicao dos fantamas
+        size_X = frame.cols/8;
+        size_y = frame.rows/8;
+
+        fantasmas.push_back(Fantasma(size_x, size_y, 0));
+        fantasmas.push_back(Fantasma(frame.cols - size_x, frame.rows - size_y, 0));
 
         while (true)
         {
@@ -133,10 +138,10 @@ int main(int argc, const char **argv)
                 cherry.getNewPos(frame.cols, frame.rows);
                 spawnCherry = false;
             }
-
+            
             // Resize dos fantamas
-            resize(fanta1, fanta1_resized, Size(frame.cols / 8, frame.rows / 8), INTER_LINEAR);
-            resize(fanta2, fanta2_resized, Size(frame.cols / 8, frame.rows / 8), INTER_LINEAR);
+            resize(fanta1, fanta1_resized, Size(size_x, size_y), INTER_LINEAR);
+            resize(fanta2, fanta2_resized, Size(size_x, size_y), INTER_LINEAR);
 
             // Desenha a cherry
             drawTransparency(frame, resizedCherry_img, cherry.pos.x, cherry.pos.y);
@@ -151,16 +156,15 @@ int main(int argc, const char **argv)
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
             // Desenha os fantasmas
-            drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y); // bugado
+            drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y);
             drawTransparency(frame, fanta2_resized, fantasmas[1].pos.x, fantasmas[1].pos.y);
 
             // Desenha o frame na tela
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
+            if (c == 27 || c == 'q' || c == 'Q') break;
 
-            if (c == 27 || c == 'q' || c == 'Q')
-                break;
         }
     }
 
