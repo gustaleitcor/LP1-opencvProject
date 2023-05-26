@@ -41,12 +41,10 @@ void drawTransRect(Mat frame, Scalar color, double alpha, Rect region)
     addWeighted(rectImg, alpha, roi, 1.0 - alpha, 0, roi);
 }
 
-void detectAndDraw(Mat &img, CascadeClassifier &cascade, double scale, bool tryflip)
+vector<Rect> detectFaces(Mat &img, CascadeClassifier &cascade, double scale, bool tryflip)
 {
-    double t = 0;
     vector<Rect> faces;
     Mat gray, smallImg;
-    Scalar color = Scalar(255, 0, 0);
 
     if (tryflip)
         flip(img, img, 1);
@@ -58,7 +56,7 @@ void detectAndDraw(Mat &img, CascadeClassifier &cascade, double scale, bool tryf
         resize(img, img, Size(), fx, fx, INTER_LINEAR_EXACT);
     equalizeHist(smallImg, smallImg);
 
-    t = (double)getTickCount();
+    // t = (double)getTickCount();
 
     cascade.detectMultiScale(smallImg, faces,
                              1.3, 2, 0
@@ -66,9 +64,12 @@ void detectAndDraw(Mat &img, CascadeClassifier &cascade, double scale, bool tryf
                                          //|CASCADE_DO_ROUGH_SEARCH
                                          | CASCADE_SCALE_IMAGE,
                              Size(40, 40));
-    t = (double)getTickCount() - t;
-    printf("detection time = %g ms\n", t * 1000 / getTickFrequency());
-    // PERCORRE AS FACES ENCONTRADAS
+
+    return faces;
+
+    /* t = (double)getTickCount() - t;
+        printf("detection time = %g ms\n", t * 1000 / getTickFrequency());
+        PERCORRE AS FACES ENCONTRADAS
     for (size_t i = 0; i < faces.size(); i++)
     {
         Rect r = faces[i];
@@ -79,4 +80,5 @@ void detectAndDraw(Mat &img, CascadeClassifier &cascade, double scale, bool tryf
 
     // Desenha o frame na tela
     imshow("result", img);
+    */
 }

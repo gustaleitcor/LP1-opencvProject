@@ -2,7 +2,7 @@ CXX := g++
 CXXFLAGS := $(shell pkg-config --cflags opencv4)
 LDFLAGS := $(shell pkg-config --libs --static opencv4)
 
-SRCS := main.cpp
+SRCS := $(wildcard *.cpp) $(wildcard src/classes/*.cpp)
 OBJS := $(SRCS:.cpp=.o)
 TARGET := main
 
