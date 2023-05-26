@@ -11,7 +11,7 @@ double Vetor::dist(double x, double y, double z)
     return sqrt((this->x - x) * (this->x - x) + (this->y - y) * (this->y - y) + (this->z - z) * (this->z - z));
 }
 
-void Vetor::setCoordenadas(double x = 0, double y = 0, double z = 0)
+void Vetor::setCoordenadas(double x , double y, double z)
 {
     this->x = x;
     this->y = y;

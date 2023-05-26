@@ -42,13 +42,17 @@ int main(int argc, const char **argv)
     Mat pacman_img = cv::imread("src/sprites/pacman.png", IMREAD_UNCHANGED);
     
     // Fantasmas variaveis
-    vector<Fantasma> fanstasmas;
+    vector<Fantasma> fantasmas;
+    Mat fanta1 = cv::imread("src/sprites/fanta1.png", IMREAD_UNCHANGED);
+    Mat fanta1_resized;
+    Mat fanta2 = cv::imread("src/sprites/fanta2.png", IMREAD_UNCHANGED);
+    Mat fanta2_resized;
 
     // Cherry variables
     Cherry cherry;
     bool spawn = true;
 
-    scale = 3; // usar 1, 2, 4.
+    scale = 1; // usar 1, 2, 4.
     if (scale < 1)
         scale = 1;
     tryflip = true;
@@ -62,7 +66,7 @@ int main(int argc, const char **argv)
     }
 
     //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if(!capture.open("video.mp4"))
+    if(!capture.open("video1.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -70,10 +74,13 @@ int main(int argc, const char **argv)
 
     if (capture.isOpened())
     {
+        capture >> frame;
 
         cout << "Video capturing has been started ..." << endl;
 
         player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
+        fantasmas.push_back(Fantasma(0, 0, 0));
+        fantasmas.push_back(Fantasma(frame.cols, frame.rows, 0));
 
         while (true)
         {
@@ -121,22 +128,30 @@ int main(int argc, const char **argv)
                 cherry.getNewPos(frame.cols, frame.rows);
                 spawn = false;
             }
+            
+            // Resize dos fantamas
+            resize(fanta1, fanta1_resized, Size(frame.cols/8, frame.rows/8), INTER_LINEAR);
+            resize(fanta2, fanta2_resized, Size(frame.cols/8, frame.rows/8), INTER_LINEAR);
 
-            // Desenha a cherry
-            drawTransparency(frame, cherry.getImg(), cherry.pos.x, cherry.pos.y);
             // Desenha o Player
             drawTransparency(frame, pacman_resizedImg, player.pos.x, player.pos.y);
+
             // Atualiza o fps
             attFPS(fps, frameCount, startTime);
+
             // Desenha o fps no frame
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
+
+            // Desenha os fantasmas
+            drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y);
+            drawTransparency(frame, fanta2_resized, fantasmas[1].pos.x, fantasmas[1].pos.y);
+
             // Desenha o frame na tela
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
             if (c == 27 || c == 'q' || c == 'Q') break;
 
-            
         }
     }
 
