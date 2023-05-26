@@ -13,5 +13,5 @@ class Cherry
 public:
     Vetor pos;
     void setPos(double x, double y);
-    void getNewPos(int bordaX, int bordaY);
+    void getNewPos(int bordaX, int bordaY, int size);
 };

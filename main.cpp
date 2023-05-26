@@ -70,8 +70,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open("video.mp4"))
+    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    // if (!capture.open("video.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -85,11 +85,11 @@ int main(int argc, const char **argv)
 
         player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
 
-        //Definicacao do tamanho e posicao dos fantamas
+        // Definicacao do tamanho e posicao dos fantamas
         resizar = resizeFactor(frame.cols, frame.rows);
-        
+
         fantasmas.push_back(Fantasma(resizar.x, resizar.y, 0));
-        fantasmas.push_back(Fantasma(frame.cols - resizar.x*2, frame.rows - resizar.y*2, 0));
+        fantasmas.push_back(Fantasma(frame.cols - resizar.x * 2, frame.rows - resizar.y * 2, 0));
 
         resize(cherry_img, resizedCherry_img, Size(resizar.x, resizar.y), INTER_LINEAR);
 
@@ -135,12 +135,12 @@ int main(int argc, const char **argv)
             }
 
             // Verifica se é para realeatorizar a posição da Cherry
-            if (spawnCherry)
+            if (true)
             {
-                cherry.getNewPos(frame.cols, frame.rows);
+                cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
                 spawnCherry = false;
             }
-            
+
             // Resize dos fantamas
             resize(fanta1, fanta1_resized, Size(resizar.x, resizar.y), INTER_LINEAR);
             resize(fanta2, fanta2_resized, Size(resizar.x, resizar.y), INTER_LINEAR);
@@ -165,8 +165,8 @@ int main(int argc, const char **argv)
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
-            if (c == 27 || c == 'q' || c == 'Q') break;
-
+            if (c == 27 || c == 'q' || c == 'Q')
+                break;
         }
     }
 
