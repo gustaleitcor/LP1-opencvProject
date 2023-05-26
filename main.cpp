@@ -70,8 +70,13 @@ int main(int argc, const char **argv)
         return -1;
     }
 
+<<<<<<< HEAD
     //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
     if (!capture.open("fffffff.mp4"))
+=======
+    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    if (!capture.open("video.mp4"))
+>>>>>>> b44afa00f2e316e1a8e48d7fc8c828fc0030828a
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -85,9 +90,9 @@ int main(int argc, const char **argv)
 
         player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
 
-        //Definicacao do tamanho e posicao dos fantamas
-        size_x = frame.cols/8;
-        size_y = frame.rows/8;
+        // Definicacao do tamanho e posicao dos fantamas
+        size_x = frame.cols / 8;
+        size_y = frame.rows / 8;
 
         fantasmas.push_back(Fantasma(size_x, size_y, 0));
         fantasmas.push_back(Fantasma(frame.cols - size_x, frame.rows - size_y, 0));
@@ -140,7 +145,7 @@ int main(int argc, const char **argv)
                 cherry.getNewPos(frame.cols, frame.rows);
                 spawnCherry = false;
             }
-            
+
             // Resize dos fantamas
             resize(fanta1, fanta1_resized, Size(size_x, size_y), INTER_LINEAR);
             resize(fanta2, fanta2_resized, Size(size_x, size_y), INTER_LINEAR);
@@ -165,8 +170,8 @@ int main(int argc, const char **argv)
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
-            if (c == 27 || c == 'q' || c == 'Q') break;
-
+            if (c == 27 || c == 'q' || c == 'Q')
+                break;
         }
     }
 
