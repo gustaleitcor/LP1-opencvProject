@@ -24,7 +24,7 @@ int main(int argc, const char **argv)
     double scale;
     vector<Rect> faces;
     Scalar color = Scalar(255, 0, 0);
-    Mat pacman_resizedImg = cv::imread("src/sprites/pacman.png", IMREAD_UNCHANGED);
+    Mat pacman_resizedImg = cv::imread("src/sprites/yegos.png", IMREAD_UNCHANGED);
     // FPS variaveis
     double fps = 0;
     double startTime = cv::getTickCount();
@@ -35,7 +35,7 @@ int main(int argc, const char **argv)
     Vetor posUnit;
     int faceWidth, faceHeight;
     double pacmanScale = 1;
-    Mat pacman_img = cv::imread("src/sprites/pacman.png", IMREAD_UNCHANGED);
+    Mat pacman_img = cv::imread("src/sprites/yegos.png", IMREAD_UNCHANGED);
 
     scale = 3; // usar 1, 2, 4.
     if (scale < 1)
