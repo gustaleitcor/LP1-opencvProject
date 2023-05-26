@@ -9,7 +9,7 @@ public:
     Vetor acc;
 
     Fantasma();
-    Fantasma(double x, double y, double z);
+    Fantasma(double x, double y, double z = 0);
 
     void atualizar();
 };
