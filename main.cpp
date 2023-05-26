@@ -48,6 +48,7 @@ int main(int argc, const char **argv)
     Mat fanta2 = cv::imread("src/sprites/fanta2.png", IMREAD_UNCHANGED);
     Mat fanta2_resized;
     double size_x, size_y;
+
     // Cherry variables
     Cherry cherry;
     bool spawnCherry = true;
@@ -69,8 +70,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-     if (!capture.open("video.mp4"))
+    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    if (!capture.open("video.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -84,9 +85,9 @@ int main(int argc, const char **argv)
 
         player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
 
-        //Definicacao do tamanho e posicao dos fantamas
-        size_x = frame.cols/8;
-        size_y = frame.rows/8;
+        // Definicacao do tamanho e posicao dos fantamas
+        size_x = frame.cols / 8;
+        size_y = frame.rows / 8;
 
         fantasmas.push_back(Fantasma(size_x, size_y, 0));
         fantasmas.push_back(Fantasma(frame.cols - size_x, frame.rows - size_y, 0));
@@ -138,7 +139,7 @@ int main(int argc, const char **argv)
                 cherry.getNewPos(frame.cols, frame.rows);
                 spawnCherry = false;
             }
-            
+
             // Resize dos fantamas
             resize(fanta1, fanta1_resized, Size(size_x, size_y), INTER_LINEAR);
             resize(fanta2, fanta2_resized, Size(size_x, size_y), INTER_LINEAR);
@@ -163,8 +164,8 @@ int main(int argc, const char **argv)
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
-            if (c == 27 || c == 'q' || c == 'Q') break;
-
+            if (c == 27 || c == 'q' || c == 'Q')
+                break;
         }
     }
 
