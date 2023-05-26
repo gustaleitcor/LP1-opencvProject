@@ -26,6 +26,7 @@ int main(int argc, const char **argv)
     double scale;
     vector<Rect> faces;
     Scalar color = Scalar(255, 0, 0);
+    Vetor resizar;
 
     // FPS variaveis
     double fps = 0;
@@ -47,7 +48,6 @@ int main(int argc, const char **argv)
     Mat fanta1_resized;
     Mat fanta2 = cv::imread("src/sprites/fanta2.png", IMREAD_UNCHANGED);
     Mat fanta2_resized;
-    Vetor size;
 
     // Cherry variables
     Cherry cherry;
@@ -86,12 +86,12 @@ int main(int argc, const char **argv)
         player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
 
         //Definicacao do tamanho e posicao dos fantamas
-        size = fanta1.resizeFactor(frame.cols, frame.rows);
+        resizar = resizeFactor(frame.cols, frame.rows);
+        
+        fantasmas.push_back(Fantasma(resizar.x, resizar.y, 0));
+        fantasmas.push_back(Fantasma(frame.cols - resizar.x*2, frame.rows - resizar.y*2, 0));
 
-        fantasmas.push_back(Fantasma(size.x, size.y, 0));
-        fantasmas.push_back(Fantasma(frame.cols - size.x*2, frame.rows - size.y*2, 0));
-
-        resize(cherry_img, resizedCherry_img, Size(size_x, size_y), INTER_LINEAR);
+        resize(cherry_img, resizedCherry_img, Size(resizar.x, resizar.y), INTER_LINEAR);
 
         while (true)
         {
@@ -142,8 +142,8 @@ int main(int argc, const char **argv)
             }
             
             // Resize dos fantamas
-            resize(fanta1, fanta1_resized, Size(size.x, size.y), INTER_LINEAR);
-            resize(fanta2, fanta2_resized, Size(size.x, size.y), INTER_LINEAR);
+            resize(fanta1, fanta1_resized, Size(resizar.x, resizar.y), INTER_LINEAR);
+            resize(fanta2, fanta2_resized, Size(resizar.x, resizar.y), INTER_LINEAR);
 
             // Desenha a cherry
             drawTransparency(frame, resizedCherry_img, cherry.pos.x, cherry.pos.y);

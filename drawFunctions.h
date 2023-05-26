@@ -2,7 +2,7 @@
 #include "opencv2/highgui.hpp"
 #include "opencv2/imgproc.hpp"
 #include "opencv2/videoio.hpp"
-
+#include "src/classes/Vetor.h"
 using namespace std;
 using namespace cv;
 
@@ -68,7 +68,23 @@ vector<Rect> detectFaces(Mat &img, CascadeClassifier &cascade, double scale, boo
                              Size(40, 40));
 
     return faces;
+    }
+    
+    Vetor resizeFactor(int x, int y){
+        Vetor size;
 
+        if(x > y){
+            x = y/8;
+            y = y/8;
+            size.setCoordenadas(x, y, 0);
+            return size;
+        }else{
+            y = x/8;
+            x = x/8;
+            size.setCoordenadas(x, y, 0);
+            return size;
+        }
+    }
     /* t = (double)getTickCount() - t;
         printf("detection time = %g ms\n", t * 1000 / getTickFrequency());
         PERCORRE AS FACES ENCONTRADAS
@@ -83,4 +99,4 @@ vector<Rect> detectFaces(Mat &img, CascadeClassifier &cascade, double scale, boo
     // Desenha o frame na tela
     imshow("result", img);
     */
-}
+
