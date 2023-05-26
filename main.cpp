@@ -48,12 +48,13 @@ int main(int argc, const char **argv)
     Mat fanta2 = cv::imread("src/sprites/fanta2.png", IMREAD_UNCHANGED);
     Mat fanta2_resized;
     double size_x, size_y;
+
     // Cherry variables
     Cherry cherry;
     bool spawnCherry = true;
-    Mat resizedCherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
+    Mat resizedCherry_img;
     Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
-    resize(cherry_img, resizedCherry_img, Size(50, 50), INTER_LINEAR);
+    
     //  resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
 
     scale = 1; // usar 1, 2, 4.
@@ -70,7 +71,7 @@ int main(int argc, const char **argv)
     }
 
     //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-     if (!capture.open("video.mp4"))
+    if (!capture.open("fffffff.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -91,6 +92,7 @@ int main(int argc, const char **argv)
         fantasmas.push_back(Fantasma(size_x, size_y, 0));
         fantasmas.push_back(Fantasma(frame.cols - size_x, frame.rows - size_y, 0));
 
+        resize(cherry_img, resizedCherry_img, Size(size_x, size_y), INTER_LINEAR);
         while (true)
         {
             capture >> frame;
