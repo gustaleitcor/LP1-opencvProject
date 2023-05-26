@@ -12,9 +12,6 @@ class Cherry
 {
 public:
     Vetor pos;
-    Mat img = cv::imread("../sprites/cherry.png", IMREAD_UNCHANGED);
-
-    Mat getImg() { return img; }
     void setPos(double x, double y);
     void getNewPos(int bordaX, int bordaY);
 };

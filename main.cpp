@@ -26,7 +26,6 @@ int main(int argc, const char **argv)
     double scale;
     vector<Rect> faces;
     Scalar color = Scalar(255, 0, 0);
-    Mat pacman_resizedImg = cv::imread("src/sprites/pacman.png", IMREAD_UNCHANGED);
 
     // FPS variaveis
     double fps = 0;
@@ -39,8 +38,9 @@ int main(int argc, const char **argv)
     Vetor posUnit;
     int faceWidth, faceHeight;
     double pacmanScale = 1;
-    Mat pacman_img = cv::imread("src/sprites/pacman.png", IMREAD_UNCHANGED);
-    
+    Mat pacman_resizedImg = cv::imread("src/sprites/pacmein.png", IMREAD_UNCHANGED);
+    Mat pacman_img = cv::imread("src/sprites/pacmein.png", IMREAD_UNCHANGED);
+
     // Fantasmas variaveis
     vector<Fantasma> fantasmas;
     Mat fanta1 = cv::imread("src/sprites/fanta1.png", IMREAD_UNCHANGED);
@@ -50,7 +50,11 @@ int main(int argc, const char **argv)
 
     // Cherry variables
     Cherry cherry;
-    bool spawn = true;
+    bool spawnCherry = true;
+    Mat resizedCherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
+    Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
+    resize(cherry_img, resizedCherry_img, Size(50, 50), INTER_LINEAR);
+    //  resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
 
     scale = 1; // usar 1, 2, 4.
     if (scale < 1)
@@ -65,8 +69,13 @@ int main(int argc, const char **argv)
         return -1;
     }
 
+<<<<<<< HEAD
     //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
     if(!capture.open("video1.mp4"))
+=======
+    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    // if (!capture.open("video.mp4"))
+>>>>>>> 005ec593dcb7175aa70ec24d0fbecaa283584ec2
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -123,16 +132,22 @@ int main(int argc, const char **argv)
                           color, 3);
             }
 
-            if (spawn)
+            // Verifica se é para realeatorizar a posição da Cherry
+            if (spawnCherry)
             {
                 cherry.getNewPos(frame.cols, frame.rows);
-                spawn = false;
+                spawnCherry = false;
             }
             
             // Resize dos fantamas
             resize(fanta1, fanta1_resized, Size(frame.cols/8, frame.rows/8), INTER_LINEAR);
             resize(fanta2, fanta2_resized, Size(frame.cols/8, frame.rows/8), INTER_LINEAR);
 
+<<<<<<< HEAD
+=======
+            // Desenha a cherry
+            drawTransparency(frame, resizedCherry_img, cherry.pos.x, cherry.pos.y);
+>>>>>>> 005ec593dcb7175aa70ec24d0fbecaa283584ec2
             // Desenha o Player
             drawTransparency(frame, pacman_resizedImg, player.pos.x, player.pos.y);
 
@@ -150,8 +165,13 @@ int main(int argc, const char **argv)
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
+<<<<<<< HEAD
             if (c == 27 || c == 'q' || c == 'Q') break;
 
+=======
+            if (c == 27 || c == 'q' || c == 'Q')
+                break;
+>>>>>>> 005ec593dcb7175aa70ec24d0fbecaa283584ec2
         }
     }
 
