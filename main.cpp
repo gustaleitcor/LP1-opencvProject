@@ -71,7 +71,7 @@ int main(int argc, const char **argv)
     }
 
     // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open("video.mp4"))
+    if (!capture.open("loira.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -116,10 +116,10 @@ int main(int argc, const char **argv)
 
                 // calcula o movimento do jogador
                 norma = player.pos.dist(r.width, r.height);
-                if (norma > 10)
+                if (norma > 50)
                 {
                     posUnit.setCoordenadas((r.x - player.pos.x) / norma, (r.y - player.pos.y) / norma, 0);
-                    player.vel.setCoordenadas(posUnit.x * 10, posUnit.y * 10, 0);
+                    player.vel.setCoordenadas(posUnit.x * 50, posUnit.y * 50, 0);
                 }
                 else
                 {
