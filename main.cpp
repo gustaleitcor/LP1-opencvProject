@@ -40,13 +40,17 @@ int main(int argc, const char **argv)
     int faceWidth, faceHeight;
     double pacmanScale = 1;
     Mat pacman_img = cv::imread("src/sprites/pacman.png", IMREAD_UNCHANGED);
-    
+
     // Fantasmas variaveis
     vector<Fantasma> fanstasmas;
 
     // Cherry variables
     Cherry cherry;
     bool spawn = true;
+    Mat resizedCherry_img = cv::imread("../sprites/cherry.png", IMREAD_UNCHANGED);
+    Mat cherry_img = cv::imread("../sprites/cherry.png", IMREAD_UNCHANGED);
+    resize(cherry_img, resizedCherry_img, Size(40, 40), INTER_LINEAR);
+    // resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
 
     scale = 3; // usar 1, 2, 4.
     if (scale < 1)
@@ -61,8 +65,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if(!capture.open("video.mp4"))
+    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    if (!capture.open("video.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -123,7 +127,7 @@ int main(int argc, const char **argv)
             }
 
             // Desenha a cherry
-            drawTransparency(frame, cherry.getImg(), cherry.pos.x, cherry.pos.y);
+            // drawTransparency(frame, cherry_img, cherry.pos.x, cherry.pos.y);
             // Desenha o Player
             drawTransparency(frame, pacman_resizedImg, player.pos.x, player.pos.y);
             // Atualiza o fps
@@ -134,9 +138,8 @@ int main(int argc, const char **argv)
             imshow("Pacman - OpenCV", frame);
 
             char c = (char)waitKey(10);
-            if (c == 27 || c == 'q' || c == 'Q') break;
-
-            
+            if (c == 27 || c == 'q' || c == 'Q')
+                break;
         }
     }
 
