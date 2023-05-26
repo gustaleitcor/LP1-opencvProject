@@ -18,5 +18,5 @@ void Cherry::getNewPos(int bordaX, int bordaY)
 
     std::cout << randX % bordaX << ' ' << randY % bordaY << std::endl;
 
-    setPos(randX % bordaX, randY % bordaY);
+    setPos(randX % (bordaX - 30), randY % (bordaY - 30));
 }
