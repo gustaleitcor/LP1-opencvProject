@@ -31,7 +31,7 @@ int main(int argc, const char **argv)
     int frameCount = 0;
     // Player variaveis
     Player player(0, 0, 1);
-    double modulo;
+    double norma;
     Vetor posUnit;
     int faceWidth, faceHeight;
     double pacmanScale = 1;
@@ -86,8 +86,8 @@ int main(int argc, const char **argv)
                 }
 
                 // calcula o movimento do jogador
-                modulo = player.pos.dist(r.width, r.height);
-                posUnit.setCoordenadas((r.x - player.pos.x) / modulo, (r.y - player.pos.y) / modulo, 0);
+                norma = player.pos.dist(r.width, r.height);
+                posUnit.setCoordenadas((r.x - player.pos.x) / norma, (r.y - player.pos.y) / norma, 0);
                 player.vel.setCoordenadas(posUnit.x * 10, posUnit.y * 10, 0);
                 player.atualizar();
 
