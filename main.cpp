@@ -69,10 +69,7 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-<<<<<<< HEAD
-    //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if(!capture.open("video1.mp4"))
-=======
+
     if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
     // if (!capture.open("video.mp4"))
 >>>>>>> 005ec593dcb7175aa70ec24d0fbecaa283584ec2
