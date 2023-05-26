@@ -6,6 +6,8 @@
 using namespace std;
 using namespace cv;
 
+// YEGO
+
 /**
  * @brief Draws a transparent image over a frame Mat.
  *
