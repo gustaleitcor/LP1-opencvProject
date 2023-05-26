@@ -40,7 +40,7 @@ int main(int argc, const char **argv)
     scale = 3; // usar 1, 2, 4.
     if (scale < 1)
         scale = 1;
-    tryflip = false;
+    tryflip = true;
 
     cascadeName = "haarcascade_frontalface_default.xml";
 
@@ -76,6 +76,7 @@ int main(int argc, const char **argv)
             {
                 Rect r = faces[0];
 
+                // loop para resgatar a maior face
                 for (auto face : faces)
                 {
                     if (face.width * face.height > r.width * r.height)
@@ -86,12 +87,11 @@ int main(int argc, const char **argv)
 
                 modulo = player.pos.dist(r.width, r.height);
                 posUnit.setCoordenadas((r.x - player.pos.x) / modulo, (r.y - player.pos.y) / modulo, 0);
-                player.acc.setCoordenadas(posUnit.x * posUnit.x * (r.x - player.pos.x) / abs(r.x - player.pos.x), posUnit.y * posUnit.y * (r.y - player.pos.y) / abs(r.y - player.pos.y), 0);
-                player.atualizar();
-                player.vel.x *= 0.85;
-                player.vel.y *= 0.85;
+                player.vel.setCoordenadas(posUnit.x * 10, posUnit.y * 10, 0);
 
-                // resize(pacman_img, resizedImg, Size(r.width, r.height), INTER_LINEAR);
+                player.atualizar();
+
+                resize(pacman_img, resizedImg, Size(r.width, r.height), INTER_LINEAR);
 
                 rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
                           Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
@@ -102,7 +102,7 @@ int main(int argc, const char **argv)
             }
 
             // Desenha o Player
-            drawTransparency(frame, resizedImg, player.pos.x + r.width / 2 - resizedImg.cols, player.pos.y + r.height / 2 - resizedImg.rows);
+            drawTransparency(frame, resizedImg, player.pos.x, player.pos.y);
             // Atualiza o fps
             attFPS(fps, frameCount, startTime);
             // Desenha o fps no frame
