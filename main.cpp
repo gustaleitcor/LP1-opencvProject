@@ -6,6 +6,7 @@
 #include "src/classes/Vetor.h"
 #include "src/classes/Player.h"
 #include "src/classes/Fantasma.h"
+#include "src/classes/Cherry.h"
 #include "src/fps.h"
 #include <iostream>
 #include <vector>
@@ -42,6 +43,10 @@ int main(int argc, const char **argv)
     
     // Fantasmas variaveis
     vector<Fantasma> fanstasmas;
+
+    // Cherry variables
+    Cherry cherry;
+    bool spawn = true;
 
     scale = 3; // usar 1, 2, 4.
     if (scale < 1)
@@ -111,6 +116,14 @@ int main(int argc, const char **argv)
                           color, 3);
             }
 
+            if (spawn)
+            {
+                cherry.getNewPos(frame.cols, frame.rows);
+                spawn = false;
+            }
+
+            // Desenha a cherry
+            drawTransparency(frame, cherry.getImg(), cherry.pos.x, cherry.pos.y);
             // Desenha o Player
             drawTransparency(frame, pacman_resizedImg, player.pos.x, player.pos.y);
             // Atualiza o fps
