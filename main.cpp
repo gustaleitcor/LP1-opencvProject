@@ -69,8 +69,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    // if (!capture.open("video.mp4"))
+    //if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+     if (!capture.open("video.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -85,7 +85,7 @@ int main(int argc, const char **argv)
         player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
 
         //Definicacao do tamanho e posicao dos fantamas
-        size_X = frame.cols/8;
+        size_x = frame.cols/8;
         size_y = frame.rows/8;
 
         fantasmas.push_back(Fantasma(size_x, size_y, 0));
