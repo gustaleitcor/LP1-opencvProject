@@ -99,7 +99,9 @@ int main(int argc, const char **argv)
 
         cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
 
-        posUnit.setCoordenadas(time(NULL) % 3, time(NULL) % 3, 0);
+        srand(time(NULL));
+
+        fantasmas[0].vel.setCoordenadas(((rand() % 2) - 0.5) * 2 * 2.23, ((rand() % 2) - 0.5) * 2 * 2.23, 0);
 
         while (true)
         {
@@ -123,7 +125,6 @@ int main(int argc, const char **argv)
                 }
 
                 // movimento fantasma de movimento aleatorio 0<->1 -1<->1  (0-0.5) * 2
-                fantasmas[0].vel.setCoordenadas((double)posUnit.x * 4, (double)posUnit.y * 4, 0);
                 fantasmas[0].atualizar();
 
                 // movimento fantasma que segue
