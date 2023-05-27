@@ -121,9 +121,9 @@ int main(int argc, const char **argv)
                     }
                 }
 
-                //movimento fantasma de movimento aleatorio
+                // movimento fantasma de movimento aleatorio 0<->1 -1<->1  (0-0.5) * 2
                 posUnit.setCoordenadas(pn.noise(fantasmas[0].pos.x, fantasmas[0].pos.y, 0), pn.noise(fantasmas[0].pos.x, fantasmas[0].pos.y, 1), 0);
-                fantasmas[0].vel.setCoordenadas(posUnit.x * 5, posUnit.y * 5, 0);
+                fantasmas[0].vel.setCoordenadas(((double)posUnit.x - 0.5) * 5, ((double)posUnit.y - 0.5) * 5, 0);
                 fantasmas[0].atualizar();
 
                 // movimento fantasma que segue
@@ -160,19 +160,14 @@ int main(int argc, const char **argv)
             }
 
             // Aumento de pontos quando comer cherry
-            norma = cherry.pos.dist(player.pos.x, player.pos.y);
-            if (norma <= 110)
+            norma = cherry.pos.dist(player.pos.x + pacman_resizedImg.cols / 2, player.pos.y + pacman_resizedImg.rows / 2);
+            if (norma <= pacman_resizedImg.rows)
             {
-                spawnCherry = true;
+                cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
                 points++;
             }
 
             // Verifica se é para realeatorizar a posição da Cherry
-            if (spawnCherry)
-            {
-                cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
-                spawnCherry = false;
-            }
 
             // Resize dos fantamas
             resize(fanta1, fanta1_resized, Size(resizar.x, resizar.y), INTER_LINEAR);
@@ -190,8 +185,8 @@ int main(int argc, const char **argv)
             // Desenha o fps no frame
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
-            // Desenha placar 
-            putText(frame, "Placar: " + std::to_string(points), Point(frame.cols/2 - 200, 56), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
+            // Desenha placar
+            putText(frame, "Placar: " + std::to_string(points), Point(frame.cols / 2 - 200, 56), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
 
             // Desenha os fantasmas
             drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y);
