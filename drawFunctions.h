@@ -70,17 +70,17 @@ vector<Rect> detectFaces(Mat &img, CascadeClassifier &cascade, double scale, boo
     return faces;
     }
     
-    Vetor resizeFactor(int x, int y){
+    Vetor resizeFactor(int x, int y, double factor){
         Vetor size;
 
         if(x > y){
-            x = y/8;
-            y = y/8;
+            x = y/factor;
+            y = y/factor;
             size.setCoordenadas(x, y, 0);
             return size;
         }else{
-            y = x/8;
-            x = x/8;
+            y = x/factor;
+            x = x/factor;
             size.setCoordenadas(x, y, 0);
             return size;
         }

@@ -90,7 +90,7 @@ int main(int argc, const char **argv)
         player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
 
         // Definicacao do tamanho e posicao dos fantamas
-        resizar = resizeFactor(frame.cols, frame.rows);
+        resizar = resizeFactor(frame.cols, frame.rows, 8);
 
         fantasmas.push_back(Fantasma(resizar.x, resizar.y, 0));
         fantasmas.push_back(Fantasma(frame.cols - resizar.x * 2, frame.rows - resizar.y * 2, 0));
