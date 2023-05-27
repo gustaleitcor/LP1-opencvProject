@@ -76,8 +76,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    // if (!capture.open("loira.mp4"))
+    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    if (!capture.open("loira.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -173,7 +173,7 @@ int main(int argc, const char **argv)
 
             // Aumento de pontos quando comer cherry
             norma = cherry.pos.dist(player.pos.x, player.pos.y);
-            if (norma <= 110)
+            if (norma <= pacman_resizedImg.cols / 2)
             {
                 cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
                 points++;
