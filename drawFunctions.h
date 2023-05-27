@@ -65,38 +65,41 @@ vector<Rect> detectFaces(Mat &img, CascadeClassifier &cascade, double scale, boo
                                          //|CASCADE_FIND_BIGGEST_OBJECT
                                          //|CASCADE_DO_ROUGH_SEARCH
                                          | CASCADE_SCALE_IMAGE,
-                             Size(40, 40));
+                             Size(100, 100));
 
     return faces;
-    }
-    
-    Vetor resizeFactor(int x, int y, double factor){
-        Vetor size;
+}
 
-        if(x > y){
-            x = y/factor;
-            y = y/factor;
-            size.setCoordenadas(x, y, 0);
-            return size;
-        }else{
-            y = x/factor;
-            x = x/factor;
-            size.setCoordenadas(x, y, 0);
-            return size;
-        }
-    }
-    /* t = (double)getTickCount() - t;
-        printf("detection time = %g ms\n", t * 1000 / getTickFrequency());
-        PERCORRE AS FACES ENCONTRADAS
-    for (size_t i = 0; i < faces.size(); i++)
+Vetor resizeFactor(int x, int y, double factor)
+{
+    Vetor size;
+
+    if (x > y)
     {
-        Rect r = faces[i];
-        rectangle(img, Point(cvRound(r.x), cvRound(r.y)),
-                  Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
-                  color, 3);
+        x = y / factor;
+        y = y / factor;
+        size.setCoordenadas(x, y, 0);
+        return size;
     }
+    else
+    {
+        y = x / factor;
+        x = x / factor;
+        size.setCoordenadas(x, y, 0);
+        return size;
+    }
+}
+/* t = (double)getTickCount() - t;
+    printf("detection time = %g ms\n", t * 1000 / getTickFrequency());
+    PERCORRE AS FACES ENCONTRADAS
+for (size_t i = 0; i < faces.size(); i++)
+{
+    Rect r = faces[i];
+    rectangle(img, Point(cvRound(r.x), cvRound(r.y)),
+              Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
+              color, 3);
+}
 
-    // Desenha o frame na tela
-    imshow("result", img);
-    */
-
+// Desenha o frame na tela
+imshow("result", img);
+*/

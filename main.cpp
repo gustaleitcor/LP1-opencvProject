@@ -44,6 +44,7 @@ int main(int argc, const char **argv)
     double pacmanScale = 1;
     Mat pacman_resizedImg = cv::imread("src/sprites/pacmein.png", IMREAD_UNCHANGED);
     Mat pacman_img = cv::imread("src/sprites/pacmein.png", IMREAD_UNCHANGED);
+    bool firstFrame = true;
 
     // Fantasmas variaveis
     vector<Fantasma> fantasmas;
@@ -74,8 +75,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open("loira.mp4"))
+    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    // if (!capture.open("loira.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -101,7 +102,7 @@ int main(int argc, const char **argv)
 
         srand(time(NULL));
 
-        fantasmas[0].vel.setCoordenadas(((rand() % 2) - 0.5) * 2 * 2.23, ((rand() % 2) - 0.5) * 2 * 2.23, 0);
+        fantasmas[0].vel.setCoordenadas(((rand() % 2) - 0.5) * 2 * 10, ((rand() % 2) - 0.5) * 2 * 10, 0);
 
         while (true)
         {
@@ -110,6 +111,11 @@ int main(int argc, const char **argv)
                 break;
 
             faces = detectFaces(frame, cascade, scale, tryflip);
+
+            if (faces.size() == 0)
+            {
+                std::cout << player.pos.x << ' ' << player.pos.y << std::endl;
+            }
 
             if (faces.size() > 0)
             {
@@ -125,6 +131,16 @@ int main(int argc, const char **argv)
                 }
 
                 // movimento fantasma de movimento aleatorio 0<->1 -1<->1  (0-0.5) * 2
+
+                if (fantasmas[0].pos.x + fanta1_resized.cols + fantasmas[0].vel.x > frame.cols || fantasmas[0].pos.x + fantasmas[0].vel.x < 0)
+                {
+                    fantasmas[0].vel.x *= -1;
+                }
+                if (fantasmas[0].pos.y + fanta1_resized.rows + fantasmas[0].vel.y > frame.rows || fantasmas[0].pos.y + fantasmas[0].vel.y < 0)
+                {
+                    fantasmas[0].vel.y *= -1;
+                }
+
                 fantasmas[0].atualizar();
 
                 // movimento fantasma que segue
@@ -144,8 +160,8 @@ int main(int argc, const char **argv)
                 norma = player.pos.dist(r.width, r.height);
                 if (norma > 50)
                 {
-                    posUnit.setCoordenadas((r.x - player.pos.x) / norma, (r.y - player.pos.y) / norma, 0);
-                    player.vel.setCoordenadas(posUnit.x * 50, posUnit.y * 50, 0);
+                    posUnit.setCoordenadas((r.x + r.width / 2 - player.pos.x - 75) / norma, (r.y + r.height / 2 - player.pos.y - 75) / norma, 0);
+                    player.vel.setCoordenadas(posUnit.x * 100, posUnit.y * 100, 0);
                 }
                 else
                 {
@@ -153,7 +169,8 @@ int main(int argc, const char **argv)
                 }
                 player.atualizar();
 
-                resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
+                resize(pacman_img, pacman_resizedImg, Size(150, 150), INTER_LINEAR);
+                firstFrame = false;
 
                 /*rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
                           Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
@@ -178,7 +195,10 @@ int main(int argc, const char **argv)
             drawTransparency(frame, resizedCherry_img, cherry.pos.x, cherry.pos.y);
 
             // Desenha o Player
-            drawTransparency(frame, pacman_resizedImg, player.pos.x, player.pos.y);
+            if (!firstFrame)
+            {
+                drawTransparency(frame, pacman_resizedImg, player.pos.x, player.pos.y);
+            }
 
             // Atualiza o fps
             attFPS(fps, frameCount, startTime);
@@ -186,12 +206,12 @@ int main(int argc, const char **argv)
             // Desenha o fps no frame
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
-            // Desenha placar
-            putText(frame, "Placar: " + std::to_string(points), Point(frame.cols / 2 - 200, 56), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
-
             // Desenha os fantasmas
             drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y);
             drawTransparency(frame, fanta2_resized, fantasmas[1].pos.x, fantasmas[1].pos.y);
+
+            // Desenha placar
+            putText(frame, "Placar: " + std::to_string(points), Point(frame.cols / 2 - 200, 56), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
 
             // Desenha o frame na tela
             imshow("Pacman - OpenCV", frame);
