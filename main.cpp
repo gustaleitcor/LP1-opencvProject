@@ -87,7 +87,7 @@ int main(int argc, const char **argv)
 
         cout << "Video capturing has been started ..." << endl;
 
-        player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
+        player.pos.setCoordenadas((frame.cols - 75) / 2.0, (frame.rows - 75) / 2.0, 0);
 
         // Definicacao do tamanho e posicao dos fantamas
         resizar = resizeFactor(frame.cols, frame.rows);
@@ -151,7 +151,7 @@ int main(int argc, const char **argv)
                 }
                 player.atualizar();
 
-                resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
+                resize(pacman_img, pacman_resizedImg, Size(150, 150), INTER_LINEAR);
 
                 /*rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
                           Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
