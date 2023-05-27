@@ -87,7 +87,7 @@ int main(int argc, const char **argv)
 
         cout << "Video capturing has been started ..." << endl;
 
-        player.pos.setCoordenadas((frame.cols - 75) / 2.0, (frame.rows - 75) / 2.0, 0);
+        player.pos.setCoordenadas(frame.cols / 2.0, frame.rows / 2.0, 0);
 
         // Definicacao do tamanho e posicao dos fantamas
         resizar = resizeFactor(frame.cols, frame.rows, 8);
@@ -98,6 +98,8 @@ int main(int argc, const char **argv)
         resize(cherry_img, resizedCherry_img, Size(resizar.x, resizar.y), INTER_LINEAR);
 
         cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
+
+        posUnit.setCoordenadas(time(NULL) % 3, time(NULL) % 3, 0);
 
         while (true)
         {
@@ -121,8 +123,7 @@ int main(int argc, const char **argv)
                 }
 
                 // movimento fantasma de movimento aleatorio 0<->1 -1<->1  (0-0.5) * 2
-                posUnit.setCoordenadas(pn.noise(fantasmas[0].pos.x, fantasmas[0].pos.y, 0), pn.noise(fantasmas[0].pos.x, fantasmas[0].pos.y, 1), 0);
-                fantasmas[0].vel.setCoordenadas(((double)posUnit.x - 0.5) * 5, ((double)posUnit.y - 0.5) * 5, 0);
+                fantasmas[0].vel.setCoordenadas((double)posUnit.x * 4, (double)posUnit.y * 4, 0);
                 fantasmas[0].atualizar();
 
                 // movimento fantasma que segue
@@ -151,7 +152,7 @@ int main(int argc, const char **argv)
                 }
                 player.atualizar();
 
-                resize(pacman_img, pacman_resizedImg, Size(150, 150), INTER_LINEAR);
+                resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
 
                 /*rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
                           Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
