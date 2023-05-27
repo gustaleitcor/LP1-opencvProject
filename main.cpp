@@ -56,7 +56,6 @@ int main(int argc, const char **argv)
     // Cherry variables
     Cherry cherry;
     int points = 0;
-    bool spawnCherry = false;
     Mat resizedCherry_img;
     Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
 
@@ -160,8 +159,8 @@ int main(int argc, const char **argv)
             }
 
             // Aumento de pontos quando comer cherry
-            norma = cherry.pos.dist(player.pos.x + pacman_resizedImg.cols / 2, player.pos.y + pacman_resizedImg.rows / 2);
-            if (norma <= pacman_resizedImg.rows)
+            norma = cherry.pos.dist(player.pos.x, player.pos.y);
+            if (norma <= 110)
             {
                 cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
                 points++;
