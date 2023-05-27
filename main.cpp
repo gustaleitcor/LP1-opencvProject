@@ -114,6 +114,19 @@ int main(int argc, const char **argv)
                     }
                 }
 
+                // Movimento fantasma que segue
+                norma = fantasmas[1].pos.dist(player.pos.x, player.pos.y);
+                if (norma > 2)
+                {
+                    posUnit.setCoordenadas((player.pos.x - fantasmas[1].pos.x) / norma, (player.pos.y - fantasmas[1].pos.y) / norma, 0);
+                    fantasmas[1].vel.setCoordenadas(posUnit.x * 2, posUnit.y * 2, 0);
+                }
+                else
+                {
+                    fantasmas[1].vel.setCoordenadas(0, 0, 0);
+                }
+                fantasmas[1].atualizar();
+
                 // calcula o movimento do jogador
                 norma = player.pos.dist(r.width, r.height);
                 if (norma > 50)
@@ -157,7 +170,8 @@ int main(int argc, const char **argv)
             // Desenha o fps no frame
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
-            putText(frame, "Placar: ", Point(frame.cols/2 - 200, 52), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
+            // Desenha placar 
+            putText(frame, "Placar: ", Point(frame.cols/2 - 200, 56), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
 
             // Desenha os fantasmas
             drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y);
