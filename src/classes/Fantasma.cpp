@@ -10,3 +10,4 @@ Fantasma::Fantasma(double x, double y, double z){
 void Fantasma::atualizar(){
     pos.sum(vel);
 }
+
