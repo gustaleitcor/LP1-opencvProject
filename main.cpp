@@ -7,9 +7,11 @@
 #include "src/classes/Player.h"
 #include "src/classes/Fantasma.h"
 #include "src/classes/Cherry.h"
+#include "src/classes/PerlinNoise.h"
 #include "src/fps.h"
 #include <iostream>
 #include <vector>
+#include <time.h>
 
 using namespace std;
 using namespace cv;
@@ -48,6 +50,7 @@ int main(int argc, const char **argv)
     Mat fanta1_resized;
     Mat fanta2 = cv::imread("src/sprites/fanta2.png", IMREAD_UNCHANGED);
     Mat fanta2_resized;
+    PerlinNoise pn = PerlinNoise(time(NULL));
 
     // Cherry variables
     Cherry cherry;
@@ -114,7 +117,15 @@ int main(int argc, const char **argv)
                     }
                 }
 
-                // Movimento fantasma que segue
+                //movimento fantasma de movimento aleatorio
+                posUnit.setCoordenadas(pn.noise(fantasmas[0].pos.x, fantasmas[0].pos.y, 0), pn.noise(fantasmas[0].pos.x, fantasmas[0].pos.y, 1), 0);
+                fantasmas[0].vel.setCoordenadas(posUnit.x * 5, posUnit.y * 5, 0);
+
+                // posUnit.setCoordenadas(time(NULL) % 100, time(NULL) % 100, 0);
+                // fantasmas[0].vel.setCoordenadas(posUnit.x * 20, posUnit.y * 500, 0);
+                fantasmas[0].atualizar();
+
+                // movimento fantasma que segue
                 norma = fantasmas[1].pos.dist(player.pos.x, player.pos.y);
                 if (norma > 2)
                 {
