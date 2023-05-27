@@ -7,9 +7,12 @@
 #include "src/classes/Player.h"
 #include "src/classes/Fantasma.h"
 #include "src/classes/Cherry.h"
+#include "src/classes/PerlinNoise.h"
 #include "src/fps.h"
 #include <iostream>
 #include <vector>
+#include <time.h>
+#include <stdlib.h>
 
 using namespace std;
 using namespace cv;
@@ -48,10 +51,11 @@ int main(int argc, const char **argv)
     Mat fanta1_resized;
     Mat fanta2 = cv::imread("src/sprites/fanta2.png", IMREAD_UNCHANGED);
     Mat fanta2_resized;
+    PerlinNoise pn = PerlinNoise(time(NULL));
 
     // Cherry variables
     Cherry cherry;
-    bool spawnCherry = true;
+    int points = 0;
     Mat resizedCherry_img;
     Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
 
@@ -70,8 +74,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    // if (!capture.open("video.mp4"))
+    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    if (!capture.open("loira.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -92,6 +96,8 @@ int main(int argc, const char **argv)
         fantasmas.push_back(Fantasma(frame.cols - resizar.x * 2, frame.rows - resizar.y * 2, 0));
 
         resize(cherry_img, resizedCherry_img, Size(resizar.x, resizar.y), INTER_LINEAR);
+
+        cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
 
         while (true)
         {
@@ -114,12 +120,30 @@ int main(int argc, const char **argv)
                     }
                 }
 
+                // movimento fantasma de movimento aleatorio 0<->1 -1<->1  (0-0.5) * 2
+                posUnit.setCoordenadas(pn.noise(fantasmas[0].pos.x, fantasmas[0].pos.y, 0), pn.noise(fantasmas[0].pos.x, fantasmas[0].pos.y, 1), 0);
+                fantasmas[0].vel.setCoordenadas(((double)posUnit.x - 0.5) * 5, ((double)posUnit.y - 0.5) * 5, 0);
+                fantasmas[0].atualizar();
+
+                // movimento fantasma que segue
+                norma = fantasmas[1].pos.dist(player.pos.x, player.pos.y);
+                if (norma > 2)
+                {
+                    posUnit.setCoordenadas((player.pos.x - fantasmas[1].pos.x) / norma, (player.pos.y - fantasmas[1].pos.y) / norma, 0);
+                    fantasmas[1].vel.setCoordenadas(posUnit.x * 2, posUnit.y * 2, 0);
+                }
+                else
+                {
+                    fantasmas[1].vel.setCoordenadas(0, 0, 0);
+                }
+                fantasmas[1].atualizar();
+
                 // calcula o movimento do jogador
                 norma = player.pos.dist(r.width, r.height);
-                if (norma > 10)
+                if (norma > 50)
                 {
                     posUnit.setCoordenadas((r.x - player.pos.x) / norma, (r.y - player.pos.y) / norma, 0);
-                    player.vel.setCoordenadas(posUnit.x * 10, posUnit.y * 10, 0);
+                    player.vel.setCoordenadas(posUnit.x * 50, posUnit.y * 50, 0);
                 }
                 else
                 {
@@ -129,17 +153,20 @@ int main(int argc, const char **argv)
 
                 resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
 
-                rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
+                /*rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
                           Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
-                          color, 3);
+                          color, 3);*/
+            }
+
+            // Aumento de pontos quando comer cherry
+            norma = cherry.pos.dist(player.pos.x, player.pos.y);
+            if (norma <= 110)
+            {
+                cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
+                points++;
             }
 
             // Verifica se é para realeatorizar a posição da Cherry
-            if (true)
-            {
-                cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
-                spawnCherry = false;
-            }
 
             // Resize dos fantamas
             resize(fanta1, fanta1_resized, Size(resizar.x, resizar.y), INTER_LINEAR);
@@ -156,6 +183,9 @@ int main(int argc, const char **argv)
 
             // Desenha o fps no frame
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
+
+            // Desenha placar
+            putText(frame, "Placar: " + std::to_string(points), Point(frame.cols / 2 - 200, 56), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
 
             // Desenha os fantasmas
             drawTransparency(frame, fanta1_resized, fantasmas[0].pos.x, fantasmas[0].pos.y);
