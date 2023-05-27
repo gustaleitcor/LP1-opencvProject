@@ -18,4 +18,6 @@ public:
     double dist(double x = 0, double y = 0, double z = 0);
     void sum(Vetor v);
     void sub(Vetor v);
+    void sub(double x = 0, double y = 0, double z = 0);
+    void mult(double m);
 };
