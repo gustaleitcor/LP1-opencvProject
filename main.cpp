@@ -44,6 +44,7 @@ int main(int argc, const char **argv)
     double pacmanScale = 1;
     Mat pacman_resizedImg = cv::imread("src/sprites/pacmein.png", IMREAD_UNCHANGED);
     Mat pacman_img = cv::imread("src/sprites/pacmein.png", IMREAD_UNCHANGED);
+    resize(pacman_img, pacman_resizedImg, Size(150, 150), INTER_LINEAR);
     bool firstFrame = true;
 
     // Fantasmas variaveis
@@ -112,11 +113,6 @@ int main(int argc, const char **argv)
 
             faces = detectFaces(frame, cascade, scale, tryflip);
 
-            if (faces.size() == 0)
-            {
-                std::cout << player.pos.x << ' ' << player.pos.y << std::endl;
-            }
-
             if (faces.size() > 0)
             {
                 Rect r = faces[0];
@@ -130,32 +126,6 @@ int main(int argc, const char **argv)
                     }
                 }
 
-                // movimento fantasma de movimento aleatorio 0<->1 -1<->1  (0-0.5) * 2
-
-                if (fantasmas[0].pos.x + fanta1_resized.cols + fantasmas[0].vel.x > frame.cols || fantasmas[0].pos.x + fantasmas[0].vel.x < 0)
-                {
-                    fantasmas[0].vel.x *= -1;
-                }
-                if (fantasmas[0].pos.y + fanta1_resized.rows + fantasmas[0].vel.y > frame.rows || fantasmas[0].pos.y + fantasmas[0].vel.y < 0)
-                {
-                    fantasmas[0].vel.y *= -1;
-                }
-
-                fantasmas[0].atualizar();
-
-                // movimento fantasma que segue
-                norma = fantasmas[1].pos.dist(player.pos.x, player.pos.y);
-                if (norma > 2)
-                {
-                    posUnit.setCoordenadas((player.pos.x - fantasmas[1].pos.x) / norma, (player.pos.y - fantasmas[1].pos.y) / norma, 0);
-                    fantasmas[1].vel.setCoordenadas(posUnit.x * 2, posUnit.y * 2, 0);
-                }
-                else
-                {
-                    fantasmas[1].vel.setCoordenadas(0, 0, 0);
-                }
-                fantasmas[1].atualizar();
-
                 // calcula o movimento do jogador
                 norma = player.pos.dist(r.width, r.height);
                 if (norma > 50)
@@ -168,14 +138,38 @@ int main(int argc, const char **argv)
                     player.vel.setCoordenadas(0, 0, 0);
                 }
                 player.atualizar();
-
-                resize(pacman_img, pacman_resizedImg, Size(150, 150), INTER_LINEAR);
                 firstFrame = false;
 
                 /*rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
                           Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
                           color, 3);*/
             }
+
+            // movimento fantasma de movimento aleatorio 0<->1 -1<->1  (0-0.5) * 2
+
+            if (fantasmas[0].pos.x + fanta1_resized.cols + fantasmas[0].vel.x > frame.cols || fantasmas[0].pos.x + fantasmas[0].vel.x < 0)
+            {
+                fantasmas[0].vel.x *= -1;
+            }
+            if (fantasmas[0].pos.y + fanta1_resized.rows + fantasmas[0].vel.y > frame.rows || fantasmas[0].pos.y + fantasmas[0].vel.y < 0)
+            {
+                fantasmas[0].vel.y *= -1;
+            }
+
+            fantasmas[0].atualizar();
+
+            // movimento fantasma que segue
+            norma = fantasmas[1].pos.dist(player.pos.x, player.pos.y);
+            if (norma > 2)
+            {
+                posUnit.setCoordenadas((player.pos.x - fantasmas[1].pos.x) / norma, (player.pos.y - fantasmas[1].pos.y) / norma, 0);
+                fantasmas[1].vel.setCoordenadas(posUnit.x * 2, posUnit.y * 2, 0);
+            }
+            else
+            {
+                fantasmas[1].vel.setCoordenadas(0, 0, 0);
+            }
+            fantasmas[1].atualizar();
 
             // Aumento de pontos quando comer cherry
             norma = cherry.pos.dist(player.pos.x, player.pos.y);
