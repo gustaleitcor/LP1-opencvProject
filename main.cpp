@@ -179,11 +179,13 @@ int main(int argc, const char **argv)
                 break;
         }
 
-        // jogo
-        jogo:
+    // jogo
+    jogo:
+
+        int points = 0;
+
         while (true)
         {
-            int points = 0;
 
             capture >> frame;
             if (frame.empty())
@@ -351,7 +353,6 @@ int main(int argc, const char **argv)
             if (c == 27 || c == 'q' || c == 'Q')
                 break;
         }
-
     }
 
     return 0;
