@@ -14,6 +14,7 @@
 #include <vector>
 #include <time.h>
 #include <stdlib.h>
+#include <cstdlib>
 
 using namespace std;
 using namespace cv;
@@ -76,8 +77,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    // if (!capture.open("loira.mp4"))
+    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    if (!capture.open("loira.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -121,6 +122,8 @@ int main(int argc, const char **argv)
     // menu
     menu:
 
+        unsigned int start_time = time(NULL);
+
         while (true)
         {
             capture >> frame;
@@ -150,12 +153,12 @@ int main(int argc, const char **argv)
                 double dist_play = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
                 double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14 + exit_button.cols / 2, frame.rows / 2 + exit_button.rows / 2);
 
-                if (dist_play < 80)
+                if (dist_play < 80 && time(NULL) - start_time > 5)
                 {
                     break;
                 }
 
-                if (dist_exit < 80)
+                if (dist_exit < 80 && time(NULL) - start_time > 5)
                 {
                     return 0;
                 }
@@ -184,11 +187,12 @@ int main(int argc, const char **argv)
     // jogo
     jogo:
 
-        unsigned int start_time = time(NULL);
+        start_time = time(NULL);
         std::string current_time;
 
         int points = 0;
 
+        system("/bin/bash -c 'play \"Sonic Ring - Sound Effect (HD).mp3\"'");
         while (true)
         {
 
@@ -260,6 +264,7 @@ int main(int argc, const char **argv)
             norma = cherry.pos.dist(player.pos.x, player.pos.y);
             if (norma <= pacman_resizedImg.cols / 2)
             {
+
                 cherry.getNewPos(frame.cols, frame.rows, (int)resizar.x);
                 points++;
             }
@@ -320,6 +325,9 @@ int main(int argc, const char **argv)
         }
 
         // fim de jogo
+
+        start_time = time(NULL);
+
         while (true)
         {
             capture >> frame;
@@ -349,12 +357,12 @@ int main(int argc, const char **argv)
                 double dist_play = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
                 double dist_menu = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
 
-                if (dist_play < 80)
+                if (dist_play < 80 && time(NULL) - start_time > 5)
                 {
                     goto jogo;
                 }
 
-                if (dist_menu < 80 && time)
+                if (dist_menu < 80 && time(NULL) - start_time > 5)
                 {
                     goto menu;
                 }
@@ -364,7 +372,7 @@ int main(int argc, const char **argv)
             putText(frame, "Fim de jogo!", Point(frame.cols / 2 - 300, 90), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
 
             // Desenha a pontuação
-            putText(frame, "Pontos feitos: ", Point(frame.cols / 2 - 400, frame.rows - 50), FONT_HERSHEY_PLAIN, 5, Scalar(240, 32, 160), 5);
+            putText(frame, "Pontos feitos: " + to_string(points), Point(frame.cols / 2 - 400, frame.rows - 50), FONT_HERSHEY_PLAIN, 5, Scalar(240, 32, 160), 5);
 
             // Desenha o play button
             drawTransparency(frame, play_button, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
