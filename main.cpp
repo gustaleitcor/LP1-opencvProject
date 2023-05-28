@@ -115,6 +115,10 @@ int main(int argc, const char **argv)
         Mat exit_button = imread("src/sprites/exit_button.png", IMREAD_UNCHANGED);
         resize(exit_button, exit_button, Size(frame.cols / 8, frame.cols / 8), INTER_LINEAR);
 
+        // Variaveis fim de jogo
+        Mat menu_button = imread("src/sprites/menu.png", IMREAD_UNCHANGED);
+        resize(menu_button, menu_button, Size(frame.cols / 8, frame.cols / 8), INTER_LINEAR);
+
         // menu
         while (true)
         {
@@ -286,6 +290,66 @@ int main(int argc, const char **argv)
             if (c == 27 || c == 'q' || c == 'Q')
                 break;
         }
+
+        // fim de jogo
+        while (true)
+        {
+            capture >> frame;
+            if (frame.empty())
+                break;
+
+            faces = detectFaces(frame, cascade, scale, tryflip);
+
+            if (faces.size() > 0)
+            {
+                Rect r = faces[0];
+
+                // loop para resgatar a maior face
+                for (auto face : faces)
+                {
+                    if (face.width * face.height > r.width * r.height)
+                    {
+                        r = face;
+                    }
+                }
+
+                rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
+                          Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
+                          color, 3);
+
+                // Botão para jogar
+                double dist_play = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
+                double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
+
+                if (dist_play < 80)
+                {
+                    break;
+                }
+
+                if (dist_exit < 80)
+                {
+                    return 0;
+                }
+            }
+
+            // Desenha o nome fim de jogo
+            putText(frame, "Fim de jogo!", Point(frame.cols / 2 - 300, 90), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
+
+            // Desenha a pontuação
+            putText(frame, "Pontos feitos: ", Point(frame.cols / 2 - 400, frame.rows - 50), FONT_HERSHEY_PLAIN, 5, Scalar(240, 32, 160), 5);
+
+            // Desenha o play button
+            drawTransparency(frame, play_button, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
+            // Desenha o menu button
+            drawTransparency(frame, menu_button, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
+
+            imshow("Pacman - OpenCV", frame);
+
+            char c = (char)waitKey(10);
+            if (c == 27 || c == 'q' || c == 'Q')
+                break;
+        }
+
     }
 
     return 0;
