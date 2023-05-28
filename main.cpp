@@ -8,6 +8,7 @@
 #include "src/classes/Fantasma.h"
 #include "src/classes/Cherry.h"
 #include "src/classes/PerlinNoise.h"
+#include "src/funcoes/dist.h"
 #include "src/fps.h"
 #include <iostream>
 #include <vector>
@@ -105,6 +106,79 @@ int main(int argc, const char **argv)
 
         fantasmas[0].vel.setCoordenadas(((rand() % 2) - 0.5) * 2 * 10, ((rand() % 2) - 0.5) * 2 * 10, 0);
 
+        // variveis menu
+
+        // Carrega play button
+        Mat play_button = imread("src/sprites/play_button.png", IMREAD_UNCHANGED);
+        resize(play_button, play_button, Size(frame.cols / 8, frame.cols / 8), INTER_LINEAR);
+        // Carrega exit button
+        Mat exit_button = imread("src/sprites/exit_button.png", IMREAD_UNCHANGED);
+        resize(exit_button, exit_button, Size(frame.cols / 8, frame.cols / 8), INTER_LINEAR);
+
+        // menu
+        while (true)
+        {
+            capture >> frame;
+            if (frame.empty())
+                break;
+
+            faces = detectFaces(frame, cascade, scale, tryflip);
+
+            if (faces.size() > 0)
+            {
+                Rect r = faces[0];
+
+                // loop para resgatar a maior face
+                for (auto face : faces)
+                {
+                    if (face.width * face.height > r.width * r.height)
+                    {
+                        r = face;
+                    }
+                }
+
+                rectangle(frame, Point(cvRound(r.x), cvRound(r.y)),
+                          Point(cvRound((r.x + r.width - 1)), cvRound((r.y + r.height - 1))),
+                          color, 3);
+
+                // Botão para jogar
+                double dist_play = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
+                double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
+
+                std::cout << "Dist play " << dist_play << std::endl;
+                std::cout << "Dist exit " << dist_exit << std::endl;
+                if (dist_play < 80)
+                {
+                    break;
+                }
+
+                if (dist_exit < 80)
+                {
+                    return 0;
+                }
+            }
+
+            // getTextSize("Test", font, fontScale, thickness, nullptr);
+
+            // Desenha o nome menu
+            putText(frame, "Menu", Point(frame.cols / 2 - 155, 90), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
+
+            // Desenha o recorde
+            putText(frame, "Recorde atual: ", Point(frame.cols / 2 - 400, frame.rows - 50), FONT_HERSHEY_PLAIN, 5, Scalar(240, 32, 160), 5);
+
+            // Desenha o play button
+            drawTransparency(frame, play_button, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
+            // Desenha o exit button
+            drawTransparency(frame, exit_button, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
+
+            imshow("Pacman - OpenCV", frame);
+
+            char c = (char)waitKey(10);
+            if (c == 27 || c == 'q' || c == 'Q')
+                break;
+        }
+
+        // jogo
         while (true)
         {
             capture >> frame;
@@ -131,7 +205,7 @@ int main(int argc, const char **argv)
                 if (norma > 50)
                 {
                     posUnit.setCoordenadas((r.x + r.width / 2 - player.pos.x - 75) / norma, (r.y + r.height / 2 - player.pos.y - 75) / norma, 0);
-                    player.vel.setCoordenadas(posUnit.x * 100, posUnit.y * 100, 0);
+                    player.vel.setCoordenadas(posUnit.x * 50, posUnit.y * 50, 0);
                 }
                 else
                 {
