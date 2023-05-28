@@ -76,8 +76,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open("loira.mp4"))
+    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    // if (!capture.open("loira.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -118,7 +118,9 @@ int main(int argc, const char **argv)
         Mat menu_button = imread("src/sprites/menu.png", IMREAD_UNCHANGED);
         resize(menu_button, menu_button, Size(frame.cols / 8, frame.cols / 8), INTER_LINEAR);
 
-        // menu
+    // menu
+    menu:
+
         while (true)
         {
             capture >> frame;
@@ -146,7 +148,7 @@ int main(int argc, const char **argv)
 
                 // Botão para jogar
                 double dist_play = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
-                double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - exit_button.rows / 2);
+                double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14 + exit_button.cols / 2, frame.rows / 2 + exit_button.rows / 2);
 
                 if (dist_play < 80)
                 {
@@ -181,6 +183,9 @@ int main(int argc, const char **argv)
 
     // jogo
     jogo:
+
+        unsigned int start_time = time(NULL);
+        std::string current_time;
 
         int points = 0;
 
@@ -277,6 +282,20 @@ int main(int argc, const char **argv)
             // Atualiza o fps
             attFPS(fps, frameCount, startTime);
 
+            // Desenha o timer
+
+            current_time = std::to_string(abs(time(NULL) - start_time - 60));
+            Size textSize = getTextSize(current_time, FONT_HERSHEY_PLAIN, 5, 5, nullptr);
+
+            if (std::stoi(current_time) < 11)
+            {
+                putText(frame, current_time, Point(frame.cols - textSize.width, textSize.height + 15), FONT_HERSHEY_PLAIN, 5, Scalar(0, 0, 255), 5);
+            }
+            else
+            {
+                putText(frame, current_time, Point(frame.cols - textSize.width, textSize.height + 15), FONT_HERSHEY_PLAIN, 5, Scalar(0, 0, 0), 5);
+            }
+
             // Desenha o fps no frame
             putText(frame, std::to_string(fps), Point(5, 15), FONT_HERSHEY_PLAIN, 1, Scalar(0, 0, 0));
 
@@ -289,6 +308,11 @@ int main(int argc, const char **argv)
 
             // Desenha o frame na tela
             imshow("Pacman - OpenCV", frame);
+
+            if (std::stoi(current_time) == 0)
+            {
+                break;
+            }
 
             char c = (char)waitKey(10);
             if (c == 27 || c == 'q' || c == 'Q')
@@ -330,9 +354,9 @@ int main(int argc, const char **argv)
                     goto jogo;
                 }
 
-                if (dist_menu < 80)
+                if (dist_menu < 80 && time)
                 {
-                    return 0;
+                    goto menu;
                 }
             }
 
