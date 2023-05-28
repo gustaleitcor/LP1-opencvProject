@@ -78,7 +78,7 @@ int main(int argc, const char **argv)
     }
 
     // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open("loira.mp4"))
+    if (!capture.open(0))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -147,7 +147,7 @@ int main(int argc, const char **argv)
 
                 // Botão para jogar
                 double dist_play = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
-                double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
+                double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - exit_button.rows / 2);
 
                 if (dist_play < 80)
                 {
@@ -181,6 +181,7 @@ int main(int argc, const char **argv)
         }
 
         // jogo
+        jogo:
         while (true)
         {
             capture >> frame;
@@ -319,14 +320,14 @@ int main(int argc, const char **argv)
 
                 // Botão para jogar
                 double dist_play = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
-                double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
+                double dist_menu = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
 
                 if (dist_play < 80)
                 {
-                    break;
+                    goto jogo;
                 }
 
-                if (dist_exit < 80)
+                if (dist_menu < 80)
                 {
                     return 0;
                 }
