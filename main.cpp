@@ -145,8 +145,6 @@ int main(int argc, const char **argv)
                 double dist_play = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
                 double dist_exit = dist(r.x + r.width / 2, r.y + r.height / 2, frame.cols / 14, frame.rows / 2 - play_button.rows / 2);
 
-                std::cout << "Dist play " << dist_play << std::endl;
-                std::cout << "Dist exit " << dist_exit << std::endl;
                 if (dist_play < 80)
                 {
                     break;
