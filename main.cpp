@@ -58,7 +58,6 @@ int main(int argc, const char **argv)
 
     // Cherry variables
     Cherry cherry;
-    int points = 0;
     Mat resizedCherry_img;
     Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
 
@@ -78,7 +77,7 @@ int main(int argc, const char **argv)
     }
 
     // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open(0))
+    if (!capture.open("loira.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -184,6 +183,8 @@ int main(int argc, const char **argv)
         jogo:
         while (true)
         {
+            int points = 0;
+
             capture >> frame;
             if (frame.empty())
                 break;
