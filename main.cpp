@@ -78,7 +78,7 @@ int main(int argc, const char **argv)
     }
 
     // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open("loira.mp4"))
+    if (!capture.open(0))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -192,7 +192,6 @@ int main(int argc, const char **argv)
 
         int points = 0;
 
-        system("/bin/bash -c 'play \"Sonic Ring - Sound Effect (HD).mp3\"'");
         while (true)
         {
 
