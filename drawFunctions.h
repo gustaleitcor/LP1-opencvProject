@@ -65,7 +65,7 @@ vector<Rect> detectFaces(Mat &img, CascadeClassifier &cascade, double scale, boo
                                          //|CASCADE_FIND_BIGGEST_OBJECT
                                          //|CASCADE_DO_ROUGH_SEARCH
                                          | CASCADE_SCALE_IMAGE,
-                             Size(40, 40));
+                             Size(10, 10));
 
     return faces;
 }

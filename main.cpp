@@ -15,6 +15,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <cstdlib>
+#include <fstream>
 
 using namespace std;
 using namespace cv;
@@ -23,6 +24,7 @@ string cascadeName;
 
 int main(int argc, const char **argv)
 {
+
     // Video variveis
     VideoCapture capture;
     Mat frame;
@@ -61,8 +63,15 @@ int main(int argc, const char **argv)
     Cherry cherry;
     Mat resizedCherry_img;
     Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
+    unsigned int record = 0;
 
     //  resize(pacman_img, pacman_resizedImg, Size(r.width, r.height), INTER_LINEAR);
+
+    // game variaveis
+
+    std::ifstream data("data.txt");
+    data >> record;
+    data.close();
 
     scale = 1; // usar 1, 2, 4.
     if (scale < 1)
@@ -78,7 +87,7 @@ int main(int argc, const char **argv)
     }
 
     // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open("loira.mp4"))
+    if (!capture.open(0))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
@@ -170,7 +179,7 @@ int main(int argc, const char **argv)
             putText(frame, "Menu", Point(frame.cols / 2 - 155, 90), FONT_HERSHEY_PLAIN, 5, Scalar(255, 0, 0), 5);
 
             // Desenha o recorde
-            putText(frame, "Recorde atual: ", Point(frame.cols / 2 - 400, frame.rows - 50), FONT_HERSHEY_PLAIN, 5, Scalar(240, 32, 160), 5);
+            putText(frame, "Recorde atual: " + to_string(record), Point(frame.cols / 2 - 400, frame.rows - 50), FONT_HERSHEY_PLAIN, 5, Scalar(240, 32, 160), 5);
 
             // Desenha o play button
             drawTransparency(frame, play_button, frame.cols - (frame.cols / 14) - play_button.cols, frame.rows / 2 - play_button.rows / 2);
@@ -322,6 +331,14 @@ int main(int argc, const char **argv)
             char c = (char)waitKey(10);
             if (c == 27 || c == 'q' || c == 'Q')
                 break;
+        }
+
+        if (record < points)
+        {
+            record = points;
+            ofstream data("data.txt");
+            data << record << std::endl;
+            data.close();
         }
 
         // fim de jogo
