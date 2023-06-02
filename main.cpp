@@ -192,7 +192,7 @@ int main(int argc, const char **argv)
 
         int points = 0;
 
-        system("/bin/bash -c 'play \"Sonic Ring - Sound Effect (HD).mp3\"'");
+        // system("/bin/bash -c 'play \"Sonic Ring - Sound Effect (HD).mp3\"'");
         while (true)
         {
 
