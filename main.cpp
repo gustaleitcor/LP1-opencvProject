@@ -191,10 +191,10 @@ int main(int argc, const char **argv)
 
         start_time = time(NULL);
         std::string current_time;
-        cherry.getNewPos(frame.cols, frame.rows, 100, scale);
+        cherry.setPos(r.x, r.y);
         player.pos.setCoordenadas(r.x, r.y, 0);
 
-        int points = 0;
+        int points = -1;
 
         // system("/bin/bash -c 'play \"Sonic Ring - Sound Effect (HD).mp3\"'");
         while (true)
