@@ -8,13 +8,13 @@ void Cherry::setPos(double x, double y)
     this->pos.y = y;
 }
 
-void Cherry::getNewPos(int bordaX, int bordaY, int size)
+void Cherry::getNewPos(int bordaX, int bordaY, int size, int scale)
 {
-
-    srand((unsigned)time(NULL));
+    static int aleatoryFactor = 1;
+    srand(time(NULL) + aleatoryFactor++);
 
     int randX = rand();
     int randY = rand();
 
-    setPos(75 + (randX % (bordaX - 75 - size)), 75 + (randY % (bordaY - 75 - size)));
+    setPos((50 + (randX % (bordaX - 100 - size))) / (scale), (50 + (randY % (bordaY - 100 - size))) / (scale));
 }
