@@ -65,7 +65,7 @@ int main(int argc, const char **argv)
     data >> record;
     data.close();
 
-    scale = 1.5; // usar 1, 2, 4.
+    scale = 1.2; // usar 1, 2, 4.
     if (scale < 1)
         scale = 1;
     tryflip = true;
@@ -266,13 +266,23 @@ int main(int argc, const char **argv)
 
             // Aumento de pontos quando comer cherry
             norma = cherry.pos.dist(player.pos);
-            if (norma <= (pacman_img.cols / 2))
+            if (norma <= (pacman_img.cols / 2)) // Verifica se é para realeatorizar a posição da Cherry
             {
                 cherry.getNewPos(frame.cols, frame.rows, 100, scale);
                 points++;
             }
 
-            // Verifica se é para realeatorizar a posição da Cherry
+            // Colisão com os fantasmas
+
+            float fanta1Dist = fantasmas[0].pos.dist(player.pos);
+            float fanta2Dist = fantasmas[1].pos.dist(player.pos);
+
+            if (fanta1Dist < fanta1.cols || fanta2Dist < fanta2.cols)
+            {
+                break;
+            }
+
+            std::cout << fanta1Dist << ' ' << fanta2Dist << std::endl;
 
             // Desenha a cherry
 
