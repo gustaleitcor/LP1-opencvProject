@@ -60,7 +60,7 @@ int main(int argc, const char **argv)
     Mat cherry_img = cv::imread("src/sprites/cherry.png", IMREAD_UNCHANGED);
     unsigned int record = 0;
 
-    // game variaveis
+    // data variaveis
     std::ifstream data("data.txt");
     data >> record;
     data.close();
@@ -78,8 +78,8 @@ int main(int argc, const char **argv)
         return -1;
     }
 
-    // if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
-    if (!capture.open("loira.mp4"))
+    if (!capture.open("rtsp://192.168.0.7:8080/h264_pcm.sdp")) // para testar com um video
+    // if (!capture.open("loira.mp4"))
     {
         cout << "Capture from camera #0 didn't work" << endl;
         return 1;
