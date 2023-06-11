@@ -196,7 +196,6 @@ int main(int argc, const char **argv)
 
         int points = -1;
 
-        // system("/bin/bash -c 'play \"Sonic Ring - Sound Effect (HD).mp3\"'");
         while (true)
         {
 
@@ -270,6 +269,7 @@ int main(int argc, const char **argv)
             {
                 cherry.setNewPos(frame.cols, frame.rows, 100, scale);
                 points++;
+                system("/bin/bash -c 'play \"Sonic Ring - Sound Effect (HD).mp3\"'");
             }
 
             // Colisão com os fantasmas
