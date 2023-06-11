@@ -2,13 +2,23 @@
 #include <cstdlib>
 #include <iostream>
 
+Cherry::Cherry()
+{
+    setPos(0, 0);
+}
+
+Cherry::Cherry(double x, double y)
+{
+    setPos(x, y);
+}
+
 void Cherry::setPos(double x, double y)
 {
     this->pos.x = x;
     this->pos.y = y;
 }
 
-void Cherry::getNewPos(int bordaX, int bordaY, int size, int scale)
+void Cherry::setNewPos(int bordaX, int bordaY, int size, int scale)
 {
     static int aleatoryFactor = 1;
     srand(time(NULL) + aleatoryFactor++);

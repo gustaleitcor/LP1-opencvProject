@@ -268,7 +268,7 @@ int main(int argc, const char **argv)
             norma = cherry.pos.dist(player.pos);
             if (norma <= (pacman_img.cols / 2)) // Verifica se é para realeatorizar a posição da Cherry
             {
-                cherry.getNewPos(frame.cols, frame.rows, 100, scale);
+                cherry.setNewPos(frame.cols, frame.rows, 100, scale);
                 points++;
             }
 
