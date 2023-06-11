@@ -180,8 +180,6 @@ int main(int argc, const char **argv)
         resize(fanta2, fanta2, Size(frame.cols / 16, frame.cols / 16), INTER_LINEAR);
         fantasmas.push_back(Fantasma(0, 0, 0));
         fantasmas.push_back(Fantasma(0, 0, 0));
-        cout << (frame.cols - fanta2.cols) / scale << ' ' << frame.rows - fanta2.rows << endl;
-        cout << frame.cols << ' ' << frame.rows << endl;
         fantasmas[0].vel.setCoordenadas(((rand() % 2) - 0.5) * 2 * 10, ((rand() % 2) - 0.5) * 2 * 10, 0);
 
         // cherry setup
@@ -193,6 +191,8 @@ int main(int argc, const char **argv)
         std::string current_time;
         cherry.setPos(r.x, r.y);
         player.pos.setCoordenadas(r.x, r.y, 0);
+        fantasmas[0].pos.setCoordenadas(0, 0, 0);
+        fantasmas[1].pos.setCoordenadas(0, 0, 0);
 
         int points = -1;
 
@@ -281,8 +281,6 @@ int main(int argc, const char **argv)
             {
                 break;
             }
-
-            std::cout << fanta1Dist << ' ' << fanta2Dist << std::endl;
 
             // Desenha a cherry
 
